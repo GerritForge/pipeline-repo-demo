@@ -1,4 +1,4 @@
-jettyUrl = 'http://dockerhost:8081/'
+jettyUrl = 'http://jenkins.gerritcentral.com:8081/'
 
 def servers
 
