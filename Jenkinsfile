@@ -6,7 +6,7 @@ stage('Dev') {
     node {
         checkout scm
         servers = load 'servers.groovy'
-        mvn '-o clean package'
+        mvn 'clean package'
         dir('target') {stash name: 'war', includes: 'x.war'}
     }
 }
@@ -53,7 +53,7 @@ def runTests(servers, duration) {
     node {
         checkout scm
         servers.runWithServer {id ->
-            mvn "-o -f sometests test -Durl=${jettyUrl}${id}/ -Dduration=${duration}"
+            mvn "-f sometests test -Durl=${jettyUrl}${id}/ -Dduration=${duration}"
         }
         junit '**/target/surefire-reports/TEST-*.xml'
     }
