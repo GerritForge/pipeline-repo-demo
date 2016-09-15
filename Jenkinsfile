@@ -4,11 +4,7 @@ def servers
 
 stage('Dev') {
     node {
-        checkout scm
-        servers = load 'servers.groovy'
-        mvn 'clean package'
-        dir('target') {stash name: 'war', includes: 'x.war'}
-	build(job: 'test-job')
+	build(job: 'dev-job')
     }
 }
 
