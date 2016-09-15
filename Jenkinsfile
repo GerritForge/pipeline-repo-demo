@@ -45,7 +45,7 @@ stage ('Production') {
 
 def runTests(servers, duration) {
     node {
-	build(job: 'dev-run-tests', duration: duration)
+	build(job: 'dev-run-tests', parameters: [ [duration: duration] ] )
     }
 }
 
