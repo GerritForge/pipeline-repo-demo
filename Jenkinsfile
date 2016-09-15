@@ -2,11 +2,13 @@ jettyUrl = 'http://jenkins.gerritcentral.com:8081/'
 
 def servers
 
+/*
 stage('Dev') {
     node {
 	build(job: 'dev-job')
     }
 }
+*/
 
 stage('QA') {
     parallel(longerTests: {
