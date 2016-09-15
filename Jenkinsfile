@@ -47,7 +47,7 @@ stage ('Production') {
 
 def runTests(servers, duration) {
     node {
-	build(job: 'dev-run-tests', parameters: [ [duration: duration] ] )
+	build(job: 'dev-run-tests', parameters: [ new hudson.model.StringParameterValue('duration', "$duration") ] )
     }
 }
 
