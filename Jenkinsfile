@@ -42,17 +42,10 @@ stage ('Production') {
         }
     }
 }
-def mvn(args) {
-    sh "${tool 'Maven 3.x'}/bin/mvn ${args}"
-}
 
 def runTests(servers, duration) {
     node {
-        checkout scm
-        servers.runWithServer {id ->
-            mvn "-f sometests test -Durl=${jettyUrl}${id}/ -Dduration=${duration}"
-        }
-        junit '**/target/surefire-reports/TEST-*.xml'
+	build(job: 'dev-run-tests', duration: duration)
     }
 }
 
