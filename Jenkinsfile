@@ -4,7 +4,7 @@ def servers
 
 stage('Dev') {
     node {
-	build(job: 'dev-job')
+	build(job: 'dev-build')
     }
 }
 
