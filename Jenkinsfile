@@ -2,27 +2,21 @@ jettyUrl = 'http://jenkins.gerritcentral.com:8081/'
 
 def servers
 
-/*
 stage('Dev') {
     node {
 	build(job: 'dev-job')
     }
 }
-*/
 
 stage('QA') {
-    parallel(longerTests: {
-        runTests(servers, 30)
-    }, quickerTests: {
-        runTests(servers, 20)
-    })
+    runTests()
 }
 
 milestone 1
 stage('Staging') {
     lock(resource: 'staging-server', inversePrecedence: true) {
         node {
-            servers.deploy 'staging'
+            deploy()
         }
         input message: "Does ${jettyUrl}staging/ look good?"
     }
@@ -33,21 +27,15 @@ stage('Staging') {
     }
 }
 
-milestone 2
-stage ('Production') {
-    lock(resource: 'production-server', inversePrecedence: true) {
-        node {
-            sh "wget -O - -S ${jettyUrl}staging/"
-            echo 'Production server looks to be alive'
-            servers.deploy 'production'
-            echo "Deployed to ${jettyUrl}production/"
-        }
+def runTests() {
+    node {
+	build(job: 'dev-run-tests')
     }
 }
 
-def runTests(servers, duration) {
+def deploy() {
     node {
-	build(job: 'dev-run-tests', parameters: [ new hudson.model.StringParameterValue('duration', "$duration") ] )
+	build(job: 'deploy-to-staging')
     }
 }
 
